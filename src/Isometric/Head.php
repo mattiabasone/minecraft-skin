@@ -24,8 +24,6 @@ class Head implements IsometricImage
      */
     private const HEAD_MARGIN = 4;
 
-    protected \Imagick $head;
-
     public function __construct(private readonly string $rawSkinImagePath)
     {
     }

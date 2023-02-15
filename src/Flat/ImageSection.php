@@ -25,8 +25,8 @@ abstract class ImageSection
     public function __construct(protected string $skinPath = '')
     {
         $this->skinResource = $this->createImageFromPng($this->skinPath);
-        $this->skinWidth = (int) imagesx($this->skinResource);
-        $this->skinHeight = (int) imagesy($this->skinResource);
+        $this->skinWidth = imagesx($this->skinResource);
+        $this->skinHeight = imagesy($this->skinResource);
     }
 
     public function __destruct()
@@ -38,6 +38,10 @@ abstract class ImageSection
 
     public function __toString(): string
     {
+        if (is_null($this->imgResource)) {
+            return "";
+        }
+
         ob_start();
         imagepng($this->imgResource);
         $imgToString = (string) ob_get_clean();
@@ -53,7 +57,7 @@ abstract class ImageSection
     /**
      * Get generated resource image.
      */
-    public function getResource(): \GdImage
+    public function getResource(): null|\GdImage
     {
         return $this->imgResource;
     }

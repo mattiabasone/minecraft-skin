@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MattiaBasone\MinecraftSkin\Isometric;
 
 class PreRendereHead implements IsometricImage
 {
-    protected \Imagick $head;
-
     public function __construct(private readonly string $preRenderedImagePath)
     {
     }

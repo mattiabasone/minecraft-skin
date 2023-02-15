@@ -15,4 +15,9 @@ abstract class BaseTestCase extends TestCase
     {
         return sprintf('%s/skins/avatar/%s_%d_%s.png', __DIR__, $name, $size, $side);
     }
+
+    protected static function getHeadSkinPath(string $name, int $size): string
+    {
+        return sprintf('%s/skins/isometric/%s_%d_HEAD.png', __DIR__, $name, $size);
+    }
 }
