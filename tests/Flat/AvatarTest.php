@@ -5,12 +5,13 @@ namespace MattiaBasone\MinecraftSkin\Tests\Flat;
 use MattiaBasone\MinecraftSkin\Component\Side;
 use MattiaBasone\MinecraftSkin\Flat\Avatar;
 use MattiaBasone\MinecraftSkin\Tests\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
+#[CoversClass(Avatar::class)]
 class AvatarTest extends BaseTestCase
 {
-    /**
-     * @dataProvider renderAvatarDataProvider
-     */
+    #[DataProvider('renderAvatarDataProvider')]
     public function testRenderAvatar(string $username, int $size, string $side): void
     {
         $avatar = new Avatar(self::getRawSkinPath($username));
@@ -21,7 +22,7 @@ class AvatarTest extends BaseTestCase
         self::assertSame($expectedImage, (string) $avatar);
     }
 
-    public function renderAvatarDataProvider(): array
+    public static function renderAvatarDataProvider(): array
     {
         return [
             ['_Cyb3r', 128, Side::FRONT],
