@@ -1,0 +1,107 @@
+<?php
+
+declare(strict_types=1);
+
+namespace MattiaBasone\MinecraftSkin\Flat;
+
+use MattiaBasone\MinecraftSkin\Component\Side;
+use MattiaBasone\MinecraftSkin\Exception\ImageTrueColorCreationFailedException;
+
+class LayerValidator
+{
+    /**
+     * Max Standard Deviation value for layer check.
+     */
+    private const DEFAULT_STANDARD_DEVIATION = 0.2;
+    private int $meanAlpha;
+    private float $redStdDev;
+    private float $greenStdDev;
+    private float $blueStdDev;
+
+    /**
+     * Checks if base image has helm for section.
+     *
+     * @throws ImageTrueColorCreationFailedException
+     */
+    public function check(\GdImage $sourceImage, Side $side): bool
+    {
+        $checkImage = $this->createCheckImage($sourceImage, $side);
+        $this->calculate($checkImage, $side);
+
+        return $this->validStdDev() || $this->meanAlpha === 127;
+    }
+
+    /**
+     * Calculate sttdev for merging helm.
+     */
+    protected function calculate(\GdImage $checkImage, Side $side): void
+    {
+        // Check for helm image
+        $allRed = [];
+        $allGreen = [];
+        $allBlue = [];
+        $allAlpha = [];
+        $x = 0;
+        while ($x < $side->getWidth()) {
+            $y = 0;
+            while ($y < $side->getHeight()) {
+                $color = (int) imagecolorat($checkImage, $x, $y);
+                $colors = imagecolorsforindex($checkImage, $color);
+                $allRed[] = $colors['red'];
+                $allGreen[] = $colors['green'];
+                $allBlue[] = $colors['blue'];
+                $allAlpha[] = $colors['alpha'];
+                ++$y;
+            }
+            ++$x;
+        }
+        // mean value for each color
+        $totalPixels = $side->getWidth() * $side->getHeight();
+        $meanRed = array_sum($allRed) / $totalPixels;
+        $meanGreen = array_sum($allGreen) / $totalPixels;
+        $meanBlue = array_sum($allBlue) / $totalPixels;
+        $this->meanAlpha = (int) round(array_sum($allAlpha) / $totalPixels);
+        // Arrays deviation
+        $devsRed = [];
+        $devsGreen = [];
+        $devsBlue = [];
+        $i = 0;
+        while ($i < $totalPixels) {
+            $devsRed[] = ($allRed[$i] - $meanRed) ** 2;
+            $devsGreen[] = ($allGreen[$i] - $meanGreen) ** 2;
+            $devsBlue[] = ($allBlue[$i] - $meanBlue) ** 2;
+            ++$i;
+        }
+        // stddev for each color
+        $this->redStdDev = sqrt(array_sum($devsRed) / $totalPixels);
+        $this->greenStdDev = sqrt(array_sum($devsGreen) / $totalPixels);
+        $this->blueStdDev = sqrt(array_sum($devsBlue) / $totalPixels);
+    }
+
+    /**
+     * @throws ImageTrueColorCreationFailedException
+     */
+    private function createCheckImage(\GdImage $sourceImage, Side $side): \GdImage
+    {
+        $width = $side->getWidth();
+        $height = $side->getHeight();
+        $checkImage = imagecreatetruecolor($side->getWidth(), $side->getHeight());
+        if ($checkImage === false) {
+            throw new ImageTrueColorCreationFailedException('imagecreatetruecolor failed');
+        }
+        imagealphablending($checkImage, false);
+        imagesavealpha($checkImage, true);
+        $colorIdentifier = (int) imagecolorallocatealpha($checkImage, 255, 255, 255, 127);
+        imagefilledrectangle($checkImage, 0, 0, $width, $height, $colorIdentifier);
+        imagecopy($checkImage, $sourceImage, 0, 0, $side->getTopLeft()->getX(), $side->getTopLeft()->getY(), $width, $height);
+
+        return $checkImage;
+    }
+
+    private function validStdDev(): bool
+    {
+        return ($this->redStdDev > self::DEFAULT_STANDARD_DEVIATION && $this->greenStdDev > self::DEFAULT_STANDARD_DEVIATION) ||
+            ($this->redStdDev > self::DEFAULT_STANDARD_DEVIATION && $this->blueStdDev > self::DEFAULT_STANDARD_DEVIATION) ||
+            ($this->greenStdDev > self::DEFAULT_STANDARD_DEVIATION && $this->blueStdDev > self::DEFAULT_STANDARD_DEVIATION);
+    }
+}

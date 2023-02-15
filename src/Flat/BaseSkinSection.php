@@ -1,0 +1,177 @@
+<?php
+
+declare(strict_types=1);
+
+namespace MattiaBasone\MinecraftSkin\Flat;
+
+use MattiaBasone\MinecraftSkin\Component\Component;
+use MattiaBasone\MinecraftSkin\Exception\ImageResourceCreationFailedException;
+use MattiaBasone\MinecraftSkin\Exception\ImageTrueColorCreationFailedException;
+use MattiaBasone\MinecraftSkin\Point;
+
+abstract class BaseSkinSection extends ImageSection
+{
+    use ImageManipulation;
+
+    protected string $side;
+    protected int $baseImageWidth = 16;
+    protected int $baseImageHeight = 32;
+
+    /**
+     * @throws ImageResourceCreationFailedException
+     * @throws \Exception
+     */
+    public function render(int $skinHeight = 256): void
+    {
+        $tmpImageResource = $this->emptyBaseImage($this->baseImageWidth, $this->baseImageHeight);
+        foreach ($this->getAllComponents() as $componentName => $componentsData) {
+            $this->copyComponent($tmpImageResource, $componentName, $componentsData[0], $componentsData[1] ?? null);
+        }
+
+        $this->patchOldSkin($tmpImageResource);
+
+        $scale = $skinHeight / $this->baseImageHeight;
+        if ($scale === 0) {
+            $scale = 1;
+        }
+        $skinWidth = (int) round($scale * $this->baseImageWidth);
+
+        $this->imgResource = $this->emptyBaseImage($skinWidth, $skinHeight);
+        imagecopyresized($this->imgResource, $tmpImageResource, 0, 0, 0, 0, $skinWidth, $skinHeight, $this->baseImageWidth, $this->baseImageHeight);
+    }
+
+    /**
+     * @return array<string, Point>
+     */
+    abstract protected function startingPoints(): array;
+
+    /**
+     * In old skins (pre 1.8) left arm/leg are right arm/leg flipped
+     *
+     * @throws \Exception
+     */
+    protected function patchOldSkin(\GdImage $tmpImageResource): void
+    {
+        if ($this->is64x64()) {
+            return;
+        }
+
+        if (\array_key_exists(Component::LEFT_ARM, $this->startingPoints())) {
+            $this->flipComponent(
+                $tmpImageResource,
+                Component::getLeftArm(),
+                Component::getRightArm(),
+                $this->startingPoints()[Component::LEFT_ARM]
+            );
+        }
+
+        if (\array_key_exists(Component::LEFT_LEG, $this->startingPoints())) {
+            $this->flipComponent(
+                $tmpImageResource,
+                Component::getLeftLeg(),
+                Component::getRightLeg(),
+                $this->startingPoints()[Component::LEFT_LEG]
+            );
+        }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function flipComponent(\GdImage $tmpImageResource, Component $dstComponent, Component $srcComponent, Point $startingPoint): void
+    {
+        $leftArmData = $dstComponent->getSideByIdentifier($this->side);
+        $rightArmData = $srcComponent->getSideByIdentifier($this->side);
+        $width = $leftArmData->getWidth();
+        $height = $leftArmData->getHeight();
+        $leftArm = imagecreatetruecolor($width, $height);
+
+        if ($leftArm instanceof \GdImage === false) {
+            throw new ImageTrueColorCreationFailedException();
+        }
+
+        for ($x = 0; $x < 4; ++$x) {
+            imagecopy(
+                $leftArm,
+                $this->skinResource,
+                $x,
+                0,
+                $rightArmData->getBottomRight()->getX() - $x - 1,
+                $rightArmData->getTopLeft()->getY(),
+                1,
+                $height
+            );
+        }
+        imagecopymerge(
+            $tmpImageResource,
+            $leftArm,
+            $startingPoint->getX(),
+            $startingPoint->getY(),
+            0,
+            0,
+            $width,
+            $height,
+            100
+        );
+    }
+
+    /**
+     * @return array<string, array<int, Component>>
+     */
+    protected function getAllComponents(): array
+    {
+        if ($this->is64x64()) {
+            return [
+                Component::HEAD => [Component::getHead(), Component::getHeadLayer()],
+                Component::TORSO => [Component::getTorso(), Component::getTorsoLayer()],
+                Component::RIGHT_ARM => [Component::getRightArm(), Component::getRightArmLayer()],
+                Component::LEFT_ARM => [Component::getLeftArm(), Component::getLeftArmLayer()],
+                Component::RIGHT_LEG => [Component::getRightLeg(), Component::getRightLegLayer()],
+                Component::LEFT_LEG => [Component::getLeftLeg(), Component::getLeftLegLayer()],
+            ];
+        }
+
+        return [
+            Component::HEAD => [Component::getHead(), Component::getHeadLayer()],
+            Component::TORSO => [Component::getTorso()],
+            Component::RIGHT_ARM => [Component::getRightArm()],
+            Component::RIGHT_LEG => [Component::getRightLeg()],
+        ];
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function copyComponent(\GdImage $tmpImageResource, string $componentName, Component $base, ?Component $layer): void
+    {
+        $sideBase = $base->getSideByIdentifier($this->side);
+        $width = $sideBase->getWidth();
+        $height = $sideBase->getHeight();
+
+        $startingPoint = $this->startingPoints()[$componentName] ?? new Point(0, 0);
+        imagecopy(
+            $tmpImageResource,
+            $this->skinResource,
+            $startingPoint->getX(),
+            $startingPoint->getY(),
+            $sideBase->getTopLeft()->getX(),
+            $sideBase->getTopLeft()->getY(),
+            $width,
+            $height
+        );
+        if ($layer !== null && (new LayerValidator())->check($this->skinResource, $layer->getSideByIdentifier($this->side))) {
+            $sideLayer = $layer->getSideByIdentifier($this->side);
+            $this->imageCopyMergeAlpha(
+                $tmpImageResource,
+                $this->skinResource,
+                $startingPoint->getX(),
+                $startingPoint->getY(),
+                $sideLayer->getTopLeft()->getX(),
+                $sideLayer->getTopLeft()->getY(),
+                $width,
+                $height,
+                100
+            );
+        }
+    }
+}
