@@ -2,13 +2,22 @@
 
 namespace MattiaBasone\MinecraftSkin\Tests\Flat;
 
+use MattiaBasone\MinecraftSkin\Component\Component;
 use MattiaBasone\MinecraftSkin\Component\Side;
 use MattiaBasone\MinecraftSkin\Flat\Avatar;
+use MattiaBasone\MinecraftSkin\Flat\ImageSection;
+use MattiaBasone\MinecraftSkin\Flat\LayerValidator;
+use MattiaBasone\MinecraftSkin\Point;
 use MattiaBasone\MinecraftSkin\Tests\BaseTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 #[CoversClass(Avatar::class)]
+#[CoversClass(Component::class)]
+#[CoversClass(Side::class)]
+#[CoversClass(ImageSection::class)]
+#[CoversClass(LayerValidator::class)]
+#[CoversClass(Point::class)]
 class AvatarTest extends BaseTestCase
 {
     #[DataProvider('renderAvatarDataProvider')]
