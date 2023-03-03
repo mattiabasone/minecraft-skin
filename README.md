@@ -8,7 +8,7 @@ For instance, if you want to render an avatar:
 use MattiaBasone\MinecraftSkin\Flat\Avatar;
 use MattiaBasone\MinecraftSkin\Component\Side;
 
-$avatar = new Avatar("/path/to/minecraft-skin.pnh");
+$avatar = new Avatar("/path/to/minecraft-skin.png");
 
 $avatar->render(256, Side::FRONT);
 
