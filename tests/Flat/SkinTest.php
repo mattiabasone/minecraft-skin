@@ -6,7 +6,8 @@ namespace MattiaBasone\MinecraftSkin\Tests\Flat;
 
 use MattiaBasone\MinecraftSkin\Component\Component;
 use MattiaBasone\MinecraftSkin\Component\Side;
-use MattiaBasone\MinecraftSkin\Flat\Avatar;
+use MattiaBasone\MinecraftSkin\Flat\BaseSkinSection;
+use MattiaBasone\MinecraftSkin\Flat\ImageManipulation;
 use MattiaBasone\MinecraftSkin\Flat\ImageSection;
 use MattiaBasone\MinecraftSkin\Flat\LayerValidator;
 use MattiaBasone\MinecraftSkin\Flat\SkinBack;
@@ -16,10 +17,12 @@ use MattiaBasone\MinecraftSkin\Tests\BaseTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
+#[CoversClass(BaseSkinSection::class)]
 #[CoversClass(SkinFront::class)]
 #[CoversClass(SkinBack::class)]
 #[CoversClass(Component::class)]
 #[CoversClass(Side::class)]
+#[CoversClass(ImageManipulation::class)]
 #[CoversClass(ImageSection::class)]
 #[CoversClass(LayerValidator::class)]
 #[CoversClass(Point::class)]
