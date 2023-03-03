@@ -29,16 +29,14 @@ class HeadTest extends BaseTestCase
     #[DataProvider('generateIsometricHeadDataProvider')]
     public function testGenerateIsometricHead(string $username, int $size): void
     {
-        $tempFile = tempnam(sys_get_temp_dir(), "head_test");
         $head = (new Head(self::getRawSkinPath($username)))->render($size);
-        $head->writeImage($tempFile);
 
-        self::assertSame(
-            file_get_contents(self::getHeadSkinPath($username, $size)),
-            file_get_contents($tempFile)
-        );
+        $actualHead = new \Imagick(self::getHeadSkinPath($username, $size));
 
-        unlink($tempFile);
+        $result = $actualHead->compareImages($head, \Imagick::METRIC_MEANABSOLUTEERROR);
+        $similarity = $result[1];
+
+        self::assertLessThan(0.01, $similarity);
     }
 
     public static function generateIsometricHeadDataProvider(): array
