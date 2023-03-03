@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MattiaBasone\MinecraftSkin\Isometric;
 
-class PreRendereHead implements IsometricImage
+readonly class PreRendereHead implements IsometricImage
 {
-    public function __construct(private readonly string $preRenderedImagePath)
+    public function __construct(private string $preRenderedImagePath)
     {
     }
 

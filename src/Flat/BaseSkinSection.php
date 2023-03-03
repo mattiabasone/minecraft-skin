@@ -21,7 +21,7 @@ abstract class BaseSkinSection extends ImageSection
      * @throws ImageResourceCreationFailedException
      * @throws \Exception
      */
-    public function render(int $skinHeight = 256): void
+    public function render(int $skinHeight): void
     {
         $tmpImageResource = $this->emptyBaseImage($this->baseImageWidth, $this->baseImageHeight);
         foreach ($this->getAllComponents() as $componentName => $componentsData) {

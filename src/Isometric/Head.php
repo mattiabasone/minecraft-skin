@@ -17,7 +17,7 @@ class Head implements IsometricImage
      */
     private const COSINE_PI_6 = \M_SQRT3 / 2;
 
-    private const HEAD_BASE_SIZE = 256;
+    private const HEAD_BASE_SIZE = 512;
 
     /**
      * Margin (in pixels) in the final image.

@@ -13,10 +13,10 @@ class LayerValidator
      * Max Standard Deviation value for layer check.
      */
     private const DEFAULT_STANDARD_DEVIATION = 0.2;
-    private int $meanAlpha;
-    private float $redStdDev;
-    private float $greenStdDev;
-    private float $blueStdDev;
+    private int $meanAlpha = 0;
+    private float $redStdDev = 0.0;
+    private float $greenStdDev = 0.0;
+    private float $blueStdDev = 0.0;
 
     /**
      * Checks if base image has helm for section.

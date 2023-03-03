@@ -22,7 +22,7 @@ abstract class ImageSection
     /**
      * @throws ImageCreateFromPngFailedException
      */
-    public function __construct(protected string $skinPath = '')
+    public function __construct(protected string $skinPath)
     {
         $this->skinResource = $this->createImageFromPng($this->skinPath);
         $this->skinWidth = imagesx($this->skinResource);

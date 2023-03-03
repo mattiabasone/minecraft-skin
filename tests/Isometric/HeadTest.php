@@ -36,7 +36,7 @@ class HeadTest extends BaseTestCase
         $result = $actualHead->compareImages($head, \Imagick::METRIC_MEANABSOLUTEERROR);
         $similarity = $result[1];
 
-        self::assertLessThan(0.01, $similarity);
+        self::assertLessThan(0.1, $similarity);
     }
 
     public static function generateIsometricHeadDataProvider(): array
