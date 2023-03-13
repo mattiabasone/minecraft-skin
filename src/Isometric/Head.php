@@ -19,11 +19,6 @@ class Head implements IsometricImage
 
     private const HEAD_BASE_SIZE = 512;
 
-    /**
-     * Margin (in pixels) in the final image.
-     */
-    private const HEAD_MARGIN = 4;
-
     public function __construct(private readonly string $rawSkinImagePath)
     {
     }
@@ -118,16 +113,16 @@ class Head implements IsometricImage
 
         // Head image
         $doubleAvatarSize = self::HEAD_BASE_SIZE * 2;
-        $finalImageSize = $doubleAvatarSize + (self::HEAD_MARGIN * 2);
+        $finalImageSize = $doubleAvatarSize + 2;
 
         $head = new \Imagick();
         $head->newImage($finalImageSize, $finalImageSize, $this->getImagickPixelTransparent());
 
         // This is weird, but it works
-        $faceX = ((int) round($doubleAvatarSize / 2)) - 2 + self::HEAD_MARGIN;
-        $faceY = $rightY = ((int) round($doubleAvatarSize / 4)) - 1 + self::HEAD_MARGIN;
-        $topX = $rightX = ((int) round($doubleAvatarSize / 16)) + self::HEAD_MARGIN;
-        $topY = -1 + self::HEAD_MARGIN;
+        $faceX = ((int) round($doubleAvatarSize / 2)) - 5;
+        $faceY = $rightY = ((int) round($doubleAvatarSize / 4));
+        $topX = $rightX = ((int) round($doubleAvatarSize / 16));
+        $topY = 0;
 
         // Add Face Section
         $head->compositeimage($face->getimage(), \Imagick::COMPOSITE_PLUS, $faceX, $faceY);
