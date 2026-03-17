@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MattiaBasone\MinecraftSkin\Isometric;
 
-readonly class PreRendereHead implements IsometricImage
+readonly class PreRenderedHead implements IsometricImage
 {
     public function __construct(private string $preRenderedImagePath)
     {
@@ -13,6 +13,7 @@ readonly class PreRendereHead implements IsometricImage
     /**
      * @throws \ImagickException
      */
+    #[\Override]
     public function render(int $size): \Imagick
     {
         $head = new \Imagick($this->preRenderedImagePath);

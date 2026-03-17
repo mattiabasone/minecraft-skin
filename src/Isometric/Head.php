@@ -10,14 +10,17 @@ use MattiaBasone\MinecraftSkin\Exception\ImageResourceCreationFailedException;
 use MattiaBasone\MinecraftSkin\Exception\ImageTrueColorCreationFailedException;
 use MattiaBasone\MinecraftSkin\Flat\Avatar as FlatAvatar;
 
+/**
+ * @phpstan-type DistortControlPoints list<int|float>
+ */
 class Head implements IsometricImage
 {
     /**
      * Cosine PI/6.
      */
-    private const COSINE_PI_6 = \M_SQRT3 / 2;
+    private const float COSINE_PI_6 = \M_SQRT3 / 2.0;
 
-    private const HEAD_BASE_SIZE = 512;
+    private const int HEAD_BASE_SIZE = 512;
 
     public function __construct(private readonly string $rawSkinImagePath)
     {
@@ -29,6 +32,7 @@ class Head implements IsometricImage
      * @throws ImageTrueColorCreationFailedException
      * @throws \ImagickException
      */
+    #[\Override]
     public function render(int $size): \Imagick
     {
         $head = $this->renderFullSize();
@@ -138,6 +142,8 @@ class Head implements IsometricImage
 
     /**
      * Point for face section.
+     *
+     * @return DistortControlPoints
      */
     private function getFrontPoints(): array
     {
@@ -154,6 +160,8 @@ class Head implements IsometricImage
 
     /**
      * Points for top section.
+     *
+     * @return DistortControlPoints
      */
     private function getTopPoints(): array
     {
@@ -170,6 +178,8 @@ class Head implements IsometricImage
 
     /**
      * Points for right section.
+     *
+     * @return DistortControlPoints
      */
     private function getRightPoints(): array
     {

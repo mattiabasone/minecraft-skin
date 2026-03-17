@@ -22,7 +22,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 #[CoversClass(Point::class)]
 class AvatarTest extends BaseTestCase
 {
-    #[DataProvider('rendeDataProvider')]
+    #[DataProvider('renderDataProvider')]
     public function testRenderAvatar(string $username, int $size, string $side): void
     {
         $avatar = new Avatar(self::getRawSkinPath($username));
@@ -33,7 +33,10 @@ class AvatarTest extends BaseTestCase
         self::assertSame($expectedImage, (string) $avatar);
     }
 
-    public static function rendeDataProvider(): array
+    /**
+     * @return list<array{0: string, 1: int, 2: string}>
+     */
+    public static function renderDataProvider(): array
     {
         return [
             ['_Cyb3r', 128, Side::FRONT],

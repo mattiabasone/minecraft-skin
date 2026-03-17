@@ -39,6 +39,9 @@ class HeadTest extends BaseTestCase
         self::assertLessThan(0.1, $similarity);
     }
 
+    /**
+     * @return list<array{0: string, 1: int}>
+     */
     public static function generateIsometricHeadDataProvider(): array
     {
         return [

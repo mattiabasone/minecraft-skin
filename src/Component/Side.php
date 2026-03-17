@@ -6,14 +6,17 @@ namespace MattiaBasone\MinecraftSkin\Component;
 
 use MattiaBasone\MinecraftSkin\Point;
 
+/**
+ * @phpstan-import-type SectionCoordinates from Coordinates
+ */
 class Side
 {
-    public const TOP = 'TOP';
-    public const BOTTOM = 'BOTTOM';
-    public const FRONT = 'FRONT';
-    public const BACK = 'BACK';
-    public const RIGHT = 'RIGHT';
-    public const LEFT = 'LEFT';
+    public const string TOP = 'TOP';
+    public const string BOTTOM = 'BOTTOM';
+    public const string FRONT = 'FRONT';
+    public const string BACK = 'BACK';
+    public const string RIGHT = 'RIGHT';
+    public const string LEFT = 'LEFT';
 
     public function __construct(protected Point $topLeft, protected Point $bottomRight)
     {
@@ -39,6 +42,9 @@ class Side
         return $this->bottomRight->getY() - $this->topLeft->getY();
     }
 
+    /**
+     * @param SectionCoordinates $rawPoints
+     */
     public static function fromRawPoints(array $rawPoints): self
     {
         return new self(

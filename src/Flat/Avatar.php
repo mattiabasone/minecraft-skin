@@ -40,15 +40,15 @@ class Avatar extends ImageSection
         // if all pixel have transparency or the colors are not the same
         if ((new LayerValidator())->check($baseSkinImage, $helmSide)) {
             $this->imageCopyMergeAlpha(
-                $tmpImageResource,
-                $baseSkinImage,
-                0,
-                0,
-                $helmSide->getTopLeft()->getX(),
-                $helmSide->getTopLeft()->getY(),
-                $headSide->getWidth(),
-                $headSide->getHeight(),
-                100
+                destinationImage: $tmpImageResource,
+                sourceImage: $baseSkinImage,
+                destinationX: 0,
+                destinationY: 0,
+                sourceX: $helmSide->getTopLeft()->getX(),
+                sourceY: $helmSide->getTopLeft()->getY(),
+                sourceWidth: $headSide->getWidth(),
+                sourceHeight: $headSide->getHeight(),
+                mergePercentage: 100
             );
         }
 

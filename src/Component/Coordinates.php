@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace MattiaBasone\MinecraftSkin\Component;
 
-/***
+/**
  * Stores components coordinates in array, first entry is top-left, second one bottom-right.
+ *
+ * @phpstan-type SectionCoordinates array{0: array{0: int, 1: int}, 1: array{0: int, 1: int}}
  */
 final class Coordinates
 {
-    public const HEAD = [
+    public const array HEAD = [
         Side::TOP => [[8, 0], [16, 8]],
         Side::BOTTOM => [[16, 0], [24, 8]],
         Side::FRONT => [[8, 8],  [16, 16]],
@@ -18,7 +20,7 @@ final class Coordinates
         Side::LEFT => [[16, 8], [24, 16]],
     ];
 
-    public const TORSO = [
+    public const array TORSO = [
         Side::TOP => [[20, 16], [28, 20]],
         Side::BOTTOM => [[28, 16], [36, 10]],
         Side::FRONT => [[20, 20], [28, 32]],
@@ -27,7 +29,7 @@ final class Coordinates
         Side::LEFT => [[28, 20], [32, 32]],
     ];
 
-    public const RIGHT_ARM = [
+    public const array RIGHT_ARM = [
         Side::TOP => [[44, 16], [48, 20]],
         Side::BOTTOM => [[48, 16], [52, 20]],
         Side::FRONT => [[44, 20], [48, 32]],
@@ -36,7 +38,7 @@ final class Coordinates
         Side::LEFT => [[48, 20], [52, 32]],
     ];
 
-    public const RIGHT_LEG = [
+    public const array RIGHT_LEG = [
         Side::TOP => [[4, 16], [8, 20]],
         Side::BOTTOM => [[8, 16], [12, 20]],
         Side::FRONT => [[4, 20], [8, 32]],
@@ -45,7 +47,7 @@ final class Coordinates
         Side::LEFT => [[8, 20], [12, 32]],
     ];
 
-    public const LEFT_ARM = [
+    public const array LEFT_ARM = [
         Side::TOP => [[36, 48], [40, 52]],
         Side::BOTTOM => [[40, 48], [44, 52]],
         Side::FRONT => [[36, 52], [40, 64]],
@@ -54,7 +56,7 @@ final class Coordinates
         Side::LEFT => [[40, 52], [44, 64]],
     ];
 
-    public const LEFT_LEG = [
+    public const array LEFT_LEG = [
         Side::TOP => [[20, 48], [24, 52]],
         Side::BOTTOM => [[24, 48], [28, 52]],
         Side::FRONT => [[20, 52], [24, 64]],
@@ -63,7 +65,7 @@ final class Coordinates
         Side::LEFT => [[24, 52], [28, 64]],
     ];
 
-    public const HEAD_LAYER = [
+    public const array HEAD_LAYER = [
         Side::TOP => [[40, 0], [48, 8]],
         Side::BOTTOM => [[48, 0], [56, 8]],
         Side::FRONT => [[40, 8], [48, 16]],
@@ -72,7 +74,7 @@ final class Coordinates
         Side::LEFT => [[48, 8], [56, 16]],
     ];
 
-    public const TORSO_LAYER = [
+    public const array TORSO_LAYER = [
         Side::TOP => [[20, 48], [28, 36]],
         Side::BOTTOM => [[28, 48], [36, 36]],
         Side::FRONT => [[20, 36], [28, 48]],
@@ -81,7 +83,7 @@ final class Coordinates
         Side::LEFT => [[28, 36], [32, 48]],
     ];
 
-    public const RIGHT_ARM_LAYER = [
+    public const array RIGHT_ARM_LAYER = [
         Side::TOP => [[44, 48], [48, 36]],
         Side::BOTTOM => [[48, 48], [52, 36]],
         Side::FRONT => [[44, 36], [48, 48]],
@@ -90,7 +92,7 @@ final class Coordinates
         Side::LEFT => [[48, 36], [52, 48]],
     ];
 
-    public const RIGHT_LEG_LAYER = [
+    public const array RIGHT_LEG_LAYER = [
         Side::TOP => [[4, 48], [8, 36]],
         Side::BOTTOM => [[8, 48], [12, 36]],
         Side::FRONT => [[4, 36], [8, 48]],
@@ -99,7 +101,7 @@ final class Coordinates
         Side::LEFT => [[8, 36], [12, 48]],
     ];
 
-    public const LEFT_ARM_LAYER = [
+    public const array LEFT_ARM_LAYER = [
         Side::TOP => [[52, 48], [56, 52]],
         Side::BOTTOM => [[56, 48], [60, 52]],
         Side::FRONT => [[52, 52], [56, 64]],
@@ -108,7 +110,7 @@ final class Coordinates
         Side::LEFT => [[56, 52], [60, 64]],
     ];
 
-    public const LEFT_LEG_LAYER = [
+    public const array LEFT_LEG_LAYER = [
         Side::TOP => [[4, 48], [8, 52]],
         Side::BOTTOM => [[8, 48], [12, 52]],
         Side::FRONT => [[4, 52], [8, 64]],

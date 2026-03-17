@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace MattiaBasone\MinecraftSkin\Component;
 
+/**
+ * @phpstan-import-type SectionCoordinates from Coordinates
+ */
 class Component
 {
-    public const HEAD = 'HEAD';
-    public const TORSO = 'TORSO';
-    public const RIGHT_ARM = 'RIGHT_ARM';
-    public const LEFT_ARM = 'LEFT_ARM';
-    public const RIGHT_LEG = 'RIGHT_LEG';
-    public const LEFT_LEG = 'LEFT_LEG';
+    public const string HEAD = 'HEAD';
+    public const string TORSO = 'TORSO';
+    public const string RIGHT_ARM = 'RIGHT_ARM';
+    public const string LEFT_ARM = 'LEFT_ARM';
+    public const string RIGHT_LEG = 'RIGHT_LEG';
+    public const string LEFT_LEG = 'LEFT_LEG';
 
     protected Side $top;
     protected Side $bottom;
@@ -20,6 +23,16 @@ class Component
     protected Side $right;
     protected Side $left;
 
+    /**
+     * @param array{
+     *     TOP: SectionCoordinates,
+     *     BOTTOM: SectionCoordinates,
+     *     FRONT: SectionCoordinates,
+     *     BACK: SectionCoordinates,
+     *     RIGHT: SectionCoordinates,
+     *     LEFT: SectionCoordinates
+     * } $sectionsCoordinates
+     */
     public function __construct(array $sectionsCoordinates)
     {
         $this->top = Side::fromRawPoints($sectionsCoordinates[Side::TOP]);
