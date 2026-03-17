@@ -17,7 +17,7 @@ abstract class ImageSection
     /**
      * Resource with the image.
      */
-    protected null|\GdImage $imgResource = null;
+    protected ?\GdImage $imgResource = null;
 
     /**
      * @throws ImageCreateFromPngFailedException
@@ -38,15 +38,14 @@ abstract class ImageSection
 
     public function __toString(): string
     {
-        if (is_null($this->imgResource)) {
+        if (\is_null($this->imgResource)) {
             return "";
         }
 
         ob_start();
         imagepng($this->imgResource);
-        $imgToString = (string) ob_get_clean();
 
-        return $imgToString;
+        return (string) ob_get_clean();
     }
 
     public function is64x64(): bool
@@ -57,7 +56,7 @@ abstract class ImageSection
     /**
      * Get generated resource image.
      */
-    public function getResource(): null|\GdImage
+    public function getResource(): ?\GdImage
     {
         return $this->imgResource;
     }

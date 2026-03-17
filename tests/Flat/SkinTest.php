@@ -50,6 +50,9 @@ class SkinTest extends BaseTestCase
         self::assertSame($expectedImage, (string) $image);
     }
 
+    /**
+     * @return list<array{0: string, 1: int}>
+     */
     public static function renderDataProvider(): array
     {
         return [

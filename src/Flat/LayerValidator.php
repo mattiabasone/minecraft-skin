@@ -12,7 +12,7 @@ class LayerValidator
     /**
      * Max Standard Deviation value for layer check.
      */
-    private const DEFAULT_STANDARD_DEVIATION = 0.2;
+    private const float DEFAULT_STANDARD_DEVIATION = 0.2;
     private int $meanAlpha = 0;
     private float $redStdDev = 0.0;
     private float $greenStdDev = 0.0;
@@ -37,9 +37,13 @@ class LayerValidator
     protected function calculate(\GdImage $checkImage, Side $side): void
     {
         // Check for helm image
+        /** @var list<int> $allRed */
         $allRed = [];
+        /** @var list<int> $allGreen */
         $allGreen = [];
+        /** @var list<int> $allBlue */
         $allBlue = [];
+        /** @var list<int> $allAlpha */
         $allAlpha = [];
         $x = 0;
         while ($x < $side->getWidth()) {
@@ -100,8 +104,8 @@ class LayerValidator
 
     private function validStdDev(): bool
     {
-        return ($this->redStdDev > self::DEFAULT_STANDARD_DEVIATION && $this->greenStdDev > self::DEFAULT_STANDARD_DEVIATION) ||
-            ($this->redStdDev > self::DEFAULT_STANDARD_DEVIATION && $this->blueStdDev > self::DEFAULT_STANDARD_DEVIATION) ||
-            ($this->greenStdDev > self::DEFAULT_STANDARD_DEVIATION && $this->blueStdDev > self::DEFAULT_STANDARD_DEVIATION);
+        return ($this->redStdDev > self::DEFAULT_STANDARD_DEVIATION && $this->greenStdDev > self::DEFAULT_STANDARD_DEVIATION)
+            || ($this->redStdDev > self::DEFAULT_STANDARD_DEVIATION && $this->blueStdDev > self::DEFAULT_STANDARD_DEVIATION)
+            || ($this->greenStdDev > self::DEFAULT_STANDARD_DEVIATION && $this->blueStdDev > self::DEFAULT_STANDARD_DEVIATION);
     }
 }

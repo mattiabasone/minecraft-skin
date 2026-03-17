@@ -142,35 +142,39 @@ abstract class BaseSkinSection extends ImageSection
     /**
      * @throws \Exception
      */
-    protected function copyComponent(\GdImage $tmpImageResource, string $componentName, Component $base, ?Component $layer): void
-    {
+    protected function copyComponent(
+        \GdImage $tmpImageResource,
+        string $componentName,
+        Component $base,
+        ?Component $layer
+    ): void {
         $sideBase = $base->getSideByIdentifier($this->side);
         $width = $sideBase->getWidth();
         $height = $sideBase->getHeight();
 
         $startingPoint = $this->startingPoints()[$componentName] ?? new Point(0, 0);
         imagecopy(
-            $tmpImageResource,
-            $this->skinResource,
-            $startingPoint->getX(),
-            $startingPoint->getY(),
-            $sideBase->getTopLeft()->getX(),
-            $sideBase->getTopLeft()->getY(),
-            $width,
-            $height
+            dst_image: $tmpImageResource,
+            src_image: $this->skinResource,
+            dst_x: $startingPoint->getX(),
+            dst_y: $startingPoint->getY(),
+            src_x: $sideBase->getTopLeft()->getX(),
+            src_y: $sideBase->getTopLeft()->getY(),
+            src_width: $width,
+            src_height: $height
         );
         if ($layer !== null && (new LayerValidator())->check($this->skinResource, $layer->getSideByIdentifier($this->side))) {
             $sideLayer = $layer->getSideByIdentifier($this->side);
             $this->imageCopyMergeAlpha(
-                $tmpImageResource,
-                $this->skinResource,
-                $startingPoint->getX(),
-                $startingPoint->getY(),
-                $sideLayer->getTopLeft()->getX(),
-                $sideLayer->getTopLeft()->getY(),
-                $width,
-                $height,
-                100
+                destinationImage: $tmpImageResource,
+                sourceImage: $this->skinResource,
+                destinationX: $startingPoint->getX(),
+                destinationY: $startingPoint->getY(),
+                sourceX: $sideLayer->getTopLeft()->getX(),
+                sourceY: $sideLayer->getTopLeft()->getY(),
+                sourceWidth: $width,
+                sourceHeight: $height,
+                mergePercentage: 100
             );
         }
     }

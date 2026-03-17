@@ -15,6 +15,7 @@ class SkinBack extends BaseSkinSection
     /**
      * @return array<string, Point>
      */
+    #[\Override]
     protected function startingPoints(): array
     {
         return [

@@ -15,13 +15,13 @@ trait ImageManipulation
     protected function imageCopyMergeAlpha(
         \GdImage $destinationImage,
         \GdImage $sourceImage,
-        int      $destinationX,
-        int      $destinationY,
-        int      $sourceX,
-        int      $sourceY,
-        int      $sourceWidth,
-        int      $sourceHeight,
-        int      $mergePercentage
+        int $destinationX,
+        int $destinationY,
+        int $sourceX,
+        int $sourceY,
+        int $sourceWidth,
+        int $sourceHeight,
+        int $mergePercentage
     ): void {
         // creating a cut resource
         $cut = imagecreatetruecolor($sourceWidth, $sourceHeight);
@@ -31,12 +31,40 @@ trait ImageManipulation
         }
 
         // copying relevant section from background to the cut resource
-        imagecopy($cut, $destinationImage, 0, 0, $destinationX, $destinationY, $sourceWidth, $sourceHeight);
+        imagecopy(
+            dst_image: $cut,
+            src_image: $destinationImage,
+            dst_x: 0,
+            dst_y: 0,
+            src_x: $destinationX,
+            src_y: $destinationY,
+            src_width: $sourceWidth,
+            src_height: $sourceHeight
+        );
 
         // copying relevant section from watermark to the cut resource
-        imagecopy($cut, $sourceImage, 0, 0, $sourceX, $sourceY, $sourceWidth, $sourceHeight);
+        imagecopy(
+            dst_image: $cut,
+            src_image: $sourceImage,
+            dst_x: 0,
+            dst_y: 0,
+            src_x: $sourceX,
+            src_y: $sourceY,
+            src_width: $sourceWidth,
+            src_height: $sourceHeight
+        );
 
         // insert cut resource to destination image
-        imagecopymerge($destinationImage, $cut, $destinationX, $destinationY, 0, 0, $sourceWidth, $sourceHeight, $mergePercentage);
+        imagecopymerge(
+            dst_image: $destinationImage,
+            src_image: $cut,
+            dst_x: $destinationX,
+            dst_y: $destinationY,
+            src_x: 0,
+            src_y: 0,
+            src_width: $sourceWidth,
+            src_height: $sourceHeight,
+            pct: $mergePercentage
+        );
     }
 }
