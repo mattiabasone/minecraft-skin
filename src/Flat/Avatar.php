@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MattiaBasone\MinecraftSkin\Flat;
 
 use MattiaBasone\MinecraftSkin\Component\Component;
-use MattiaBasone\MinecraftSkin\Exception\ImageCreateFromPngFailedException;
 use MattiaBasone\MinecraftSkin\Exception\ImageResourceCreationFailedException;
 use MattiaBasone\MinecraftSkin\Exception\ImageTrueColorCreationFailedException;
 
@@ -19,14 +18,12 @@ class Avatar extends ImageSection
      * @param int<1, max> $size Avatar size
      * @param string $type Section rendered
      *
-     * @throws ImageCreateFromPngFailedException
      * @throws ImageResourceCreationFailedException
      * @throws ImageTrueColorCreationFailedException
      */
     public function render(int $size, string $type): void
     {
-        // generate png from url/path
-        $baseSkinImage = $this->createImageFromPng($this->skinPath);
+        $baseSkinImage = $this->skinResource;
         imagealphablending($baseSkinImage, false);
         imagesavealpha($baseSkinImage, true);
 
