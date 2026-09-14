@@ -14,7 +14,11 @@ abstract class BaseSkinSection extends ImageSection
     use ImageManipulation;
 
     protected string $side;
+
+    /** @var int<1, max> */
     protected int $baseImageWidth = 16;
+
+    /** @var int<1, max> */
     protected int $baseImageHeight = 32;
 
     /**
@@ -23,6 +27,10 @@ abstract class BaseSkinSection extends ImageSection
      */
     public function render(int $skinHeight): void
     {
+        if ($skinHeight < 1) {
+            throw new \InvalidArgumentException('skinHeight must be greater than 0');
+        }
+
         $tmpImageResource = $this->emptyBaseImage($this->baseImageWidth, $this->baseImageHeight);
         foreach ($this->getAllComponents() as $componentName => $componentsData) {
             $this->copyComponent($tmpImageResource, $componentName, $componentsData[0], $componentsData[1] ?? null);
@@ -31,10 +39,7 @@ abstract class BaseSkinSection extends ImageSection
         $this->patchOldSkin($tmpImageResource);
 
         $scale = $skinHeight / $this->baseImageHeight;
-        if ($scale === 0) {
-            $scale = 1;
-        }
-        $skinWidth = (int) round($scale * $this->baseImageWidth);
+        $skinWidth = max(1, (int) round($scale * $this->baseImageWidth));
 
         $this->imgResource = $this->emptyBaseImage($skinWidth, $skinHeight);
         imagecopyresized($this->imgResource, $tmpImageResource, 0, 0, 0, 0, $skinWidth, $skinHeight, $this->baseImageWidth, $this->baseImageHeight);

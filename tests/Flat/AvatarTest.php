@@ -22,10 +22,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 #[CoversClass(Point::class)]
 class AvatarTest extends BaseTestCase
 {
-    #[DataProvider('renderDataProvider')]
     /**
      * @param int<1, max> $size
      */
+    #[DataProvider('renderDataProvider')]
     public function testRenderAvatar(string $username, int $size, string $side): void
     {
         $avatar = new Avatar(self::getRawSkinPath($username));
