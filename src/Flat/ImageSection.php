@@ -31,12 +31,24 @@ abstract class ImageSection
 
     public function __toString(): string
     {
+        return $this->toPng();
+    }
+
+    /**
+     * PNG-encode the generated image.
+     *
+     * @param int<-1, 9> $compressionLevel Zlib compression level. Defaults to PHP's own default (-1).
+     *                                     Pass 0 for fast, uncompressed encoding when the blob is only
+     *                                     used as an in-memory handoff (e.g. to Imagick) and never stored.
+     */
+    public function toPng(int $compressionLevel = -1): string
+    {
         if (\is_null($this->imgResource)) {
             return "";
         }
 
         ob_start();
-        imagepng($this->imgResource);
+        imagepng($this->imgResource, null, $compressionLevel);
 
         return (string) ob_get_clean();
     }

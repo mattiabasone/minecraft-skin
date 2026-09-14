@@ -71,7 +71,7 @@ class Head implements IsometricImage
         $avatar->render($baseSize, Side::FRONT);
 
         $face = new \Imagick();
-        $face->readImageBlob((string) $avatar);
+        $face->readImageBlob($avatar->toPng(0));
         $face->brightnessContrastImage(8.0, 8.0);
         $face->setImageVirtualPixelMethod(\Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
         $face->setBackgroundColor(
@@ -88,7 +88,7 @@ class Head implements IsometricImage
         $avatar->render($baseSize, Side::TOP);
 
         $top = new \Imagick();
-        $top->readImageBlob((string) $avatar);
+        $top->readImageBlob($avatar->toPng(0));
         $top->brightnessContrastImage(6.0, 6.0);
         $top->setImageVirtualPixelMethod(\Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
         $top->setBackgroundColor(
@@ -105,7 +105,7 @@ class Head implements IsometricImage
         $avatar->render($baseSize, Side::RIGHT);
 
         $right = new \Imagick();
-        $right->readImageBlob((string) $avatar);
+        $right->readImageBlob($avatar->toPng(0));
         $right->brightnessContrastImage(4.0, 4.0);
 
         $right->setImageVirtualPixelMethod(\Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
