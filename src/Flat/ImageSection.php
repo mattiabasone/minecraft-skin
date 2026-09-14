@@ -29,13 +29,6 @@ abstract class ImageSection
         $this->skinHeight = imagesy($this->skinResource);
     }
 
-    public function __destruct()
-    {
-        if ($this->imgResource instanceof \GdImage) {
-            imagedestroy($this->imgResource);
-        }
-    }
-
     public function __toString(): string
     {
         if (\is_null($this->imgResource)) {
@@ -75,6 +68,8 @@ abstract class ImageSection
     }
 
     /**
+     * @param int<1, max> $width
+     * @param int<1, max> $height
      * @throws ImageResourceCreationFailedException
      */
     protected function emptyBaseImage(int $width, int $height): \GdImage

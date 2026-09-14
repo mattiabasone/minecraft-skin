@@ -32,11 +32,17 @@ class Side
         return $this->bottomRight;
     }
 
+    /**
+     * @return int<1, max>
+     */
     public function getWidth(): int
     {
         return $this->bottomRight->getX() - $this->topLeft->getX();
     }
 
+    /**
+     * @return int<1, max>
+     */
     public function getHeight(): int
     {
         return $this->bottomRight->getY() - $this->topLeft->getY();

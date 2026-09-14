@@ -16,7 +16,7 @@ class Avatar extends ImageSection
     /**
      * Render avatar image.
      *
-     * @param int $size Avatar size
+     * @param int<1, max> $size Avatar size
      * @param string $type Section rendered
      *
      * @throws ImageCreateFromPngFailedException
