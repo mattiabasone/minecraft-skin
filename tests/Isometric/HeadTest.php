@@ -14,12 +14,13 @@ use MattiaBasone\MinecraftSkin\Isometric\Head;
 use MattiaBasone\MinecraftSkin\Point;
 use MattiaBasone\MinecraftSkin\Tests\BaseTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 #[CoversClass(Head::class)]
 #[CoversClass(Avatar::class)]
 #[CoversClass(Component::class)]
-#[CoversClass(ImageManipulation::class)]
+#[CoversTrait(ImageManipulation::class)]
 #[CoversClass(ImageSection::class)]
 #[CoversClass(LayerValidator::class)]
 #[CoversClass(Point::class)]
