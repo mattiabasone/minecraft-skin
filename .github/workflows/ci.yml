@@ -1,8 +1,15 @@
-name: Testing
-on: [push, pull_request]
+name: CI
+
+on:
+  push:
+    branches: ["master"]
+  merge_group:
+  pull_request:
+    branches: ["master"]
+
 jobs:
-  symfony:
-    name: Testing (PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }})
+  ci:
+    name: CI (PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }})
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
@@ -11,7 +18,7 @@ jobs:
         php-versions: ['8.3', '8.4', '8.5']
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -25,17 +32,18 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache composer dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v6
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('*/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
-      - name: Run tests
-        run: ./vendor/bin/phpunit --coverage-text
+      - parallel:
+        - name: Run tests
+          run: ./vendor/bin/phpunit --coverage-text
 
-      - name: Run psalm
-        run: ./vendor/bin/phpstan
+        - name: Run phpstan
+          run: composer phpstan

@@ -10,6 +10,8 @@ trait ImageManipulation
 {
     /**
      * @see https://www.php.net/manual/en/function.imagecopymerge.php#92787
+     * @param int<1, max> $sourceWidth
+     * @param int<1, max> $sourceHeight
      * @throws ImageTrueColorCreationFailedException
      */
     protected function imageCopyMergeAlpha(

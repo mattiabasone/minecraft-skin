@@ -29,21 +29,26 @@ abstract class ImageSection
         $this->skinHeight = imagesy($this->skinResource);
     }
 
-    public function __destruct()
+    public function __toString(): string
     {
-        if ($this->imgResource instanceof \GdImage) {
-            imagedestroy($this->imgResource);
-        }
+        return $this->toPng();
     }
 
-    public function __toString(): string
+    /**
+     * PNG-encode the generated image.
+     *
+     * @param int<-1, 9> $compressionLevel Zlib compression level. Defaults to PHP's own default (-1).
+     *                                     Pass 0 for fast, uncompressed encoding when the blob is only
+     *                                     used as an in-memory handoff (e.g. to Imagick) and never stored.
+     */
+    public function toPng(int $compressionLevel = -1): string
     {
         if (\is_null($this->imgResource)) {
             return "";
         }
 
         ob_start();
-        imagepng($this->imgResource);
+        imagepng($this->imgResource, null, $compressionLevel);
 
         return (string) ob_get_clean();
     }
@@ -75,6 +80,8 @@ abstract class ImageSection
     }
 
     /**
+     * @param int<1, max> $width
+     * @param int<1, max> $height
      * @throws ImageResourceCreationFailedException
      */
     protected function emptyBaseImage(int $width, int $height): \GdImage

@@ -15,6 +15,7 @@ use MattiaBasone\MinecraftSkin\Flat\SkinFront;
 use MattiaBasone\MinecraftSkin\Point;
 use MattiaBasone\MinecraftSkin\Tests\BaseTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 #[CoversClass(BaseSkinSection::class)]
@@ -22,7 +23,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 #[CoversClass(SkinBack::class)]
 #[CoversClass(Component::class)]
 #[CoversClass(Side::class)]
-#[CoversClass(ImageManipulation::class)]
+#[CoversTrait(ImageManipulation::class)]
 #[CoversClass(ImageSection::class)]
 #[CoversClass(LayerValidator::class)]
 #[CoversClass(Point::class)]

@@ -20,7 +20,8 @@ class Head implements IsometricImage
      */
     private const float COSINE_PI_6 = \M_SQRT3 / 2.0;
 
-    private const int HEAD_BASE_SIZE = 512;
+    private const int HEAD_MAX_BASE_SIZE = 512;
+    private const int HEAD_MIN_BASE_SIZE = 64;
 
     public function __construct(private readonly string $rawSkinImagePath)
     {
@@ -35,7 +36,9 @@ class Head implements IsometricImage
     #[\Override]
     public function render(int $size): \Imagick
     {
-        $head = $this->renderFullSize();
+        // Render at a resolution close to the requested size (clamped to a sane range)
+        // instead of always rendering full size and downscaling, which is far more expensive.
+        $head = $this->renderFullSize($this->clampBaseSize($size));
         // Set format to PNG
         $head->setImageFormat('png');
         $head->resizeImage($size, $size, self::DEFAULT_RESIZE_FILTER, self::DEFAULT_BLUR_VALUE);
@@ -54,20 +57,21 @@ class Head implements IsometricImage
     /**
      * Render Isometric from avatar sections.
      *
+     * @param int<1, max> $baseSize
      * @throws ImageCreateFromPngFailedException
      * @throws ImageResourceCreationFailedException
      * @throws ImageTrueColorCreationFailedException
      * @throws \ImagickException
      */
-    protected function renderFullSize(): \Imagick
+    protected function renderFullSize(int $baseSize): \Imagick
     {
         $avatar = new FlatAvatar($this->rawSkinImagePath);
 
         // Face
-        $avatar->render(self::HEAD_BASE_SIZE, Side::FRONT);
+        $avatar->render($baseSize, Side::FRONT);
 
         $face = new \Imagick();
-        $face->readImageBlob((string) $avatar);
+        $face->readImageBlob($avatar->toPng(0));
         $face->brightnessContrastImage(8.0, 8.0);
         $face->setImageVirtualPixelMethod(\Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
         $face->setBackgroundColor(
@@ -76,15 +80,15 @@ class Head implements IsometricImage
 
         $face->distortImage(
             \Imagick::DISTORTION_AFFINE,
-            $this->getFrontPoints(),
+            $this->getFrontPoints($baseSize),
             true
         );
 
         // Top
-        $avatar->render(self::HEAD_BASE_SIZE, Side::TOP);
+        $avatar->render($baseSize, Side::TOP);
 
         $top = new \Imagick();
-        $top->readImageBlob((string) $avatar);
+        $top->readImageBlob($avatar->toPng(0));
         $top->brightnessContrastImage(6.0, 6.0);
         $top->setImageVirtualPixelMethod(\Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
         $top->setBackgroundColor(
@@ -93,15 +97,15 @@ class Head implements IsometricImage
 
         $top->distortImage(
             \Imagick::DISTORTION_AFFINE,
-            $this->getTopPoints(),
+            $this->getTopPoints($baseSize),
             true
         );
 
         // Right
-        $avatar->render(self::HEAD_BASE_SIZE, Side::RIGHT);
+        $avatar->render($baseSize, Side::RIGHT);
 
         $right = new \Imagick();
-        $right->readImageBlob((string) $avatar);
+        $right->readImageBlob($avatar->toPng(0));
         $right->brightnessContrastImage(4.0, 4.0);
 
         $right->setImageVirtualPixelMethod(\Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
@@ -111,12 +115,12 @@ class Head implements IsometricImage
 
         $right->distortImage(
             \Imagick::DISTORTION_AFFINE,
-            $this->getRightPoints(),
+            $this->getRightPoints($baseSize),
             true
         );
 
         // Head image
-        $doubleAvatarSize = self::HEAD_BASE_SIZE * 2;
+        $doubleAvatarSize = $baseSize * 2;
         $finalImageSize = $doubleAvatarSize + 2;
 
         $head = new \Imagick();
@@ -141,13 +145,28 @@ class Head implements IsometricImage
     }
 
     /**
+     * @return int<1, max>
+     */
+    private function clampBaseSize(int $size): int
+    {
+        if ($size < self::HEAD_MIN_BASE_SIZE) {
+            return self::HEAD_MIN_BASE_SIZE;
+        }
+
+        if ($size > self::HEAD_MAX_BASE_SIZE) {
+            return self::HEAD_MAX_BASE_SIZE;
+        }
+
+        return $size;
+    }
+
+    /**
      * Point for face section.
      *
      * @return DistortControlPoints
      */
-    private function getFrontPoints(): array
+    private function getFrontPoints(int $size): array
     {
-        $size = self::HEAD_BASE_SIZE;
         $cosine_result = round(self::COSINE_PI_6 * $size);
         $halfSize = round($size / 2);
 
@@ -163,9 +182,8 @@ class Head implements IsometricImage
      *
      * @return DistortControlPoints
      */
-    private function getTopPoints(): array
+    private function getTopPoints(int $size): array
     {
-        $size = self::HEAD_BASE_SIZE;
         $cosineResult = round(self::COSINE_PI_6 * $size);
         $halfSize = round($size / 2);
 
@@ -181,9 +199,8 @@ class Head implements IsometricImage
      *
      * @return DistortControlPoints
      */
-    private function getRightPoints(): array
+    private function getRightPoints(int $size): array
     {
-        $size = self::HEAD_BASE_SIZE;
         $cosineResult = round(self::COSINE_PI_6 * $size);
         $halfSize = round($size / 2);
 

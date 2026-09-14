@@ -32,14 +32,30 @@ class Side
         return $this->bottomRight;
     }
 
+    /**
+     * @return int<1, max>
+     */
     public function getWidth(): int
     {
-        return $this->bottomRight->getX() - $this->topLeft->getX();
+        $width = $this->bottomRight->getX() - $this->topLeft->getX();
+        if ($width < 1) {
+            throw new \InvalidArgumentException('Side width must be greater than 0');
+        }
+
+        return $width;
     }
 
+    /**
+     * @return int<1, max>
+     */
     public function getHeight(): int
     {
-        return $this->bottomRight->getY() - $this->topLeft->getY();
+        $height = $this->bottomRight->getY() - $this->topLeft->getY();
+        if ($height < 1) {
+            throw new \InvalidArgumentException('Side height must be greater than 0');
+        }
+
+        return $height;
     }
 
     /**

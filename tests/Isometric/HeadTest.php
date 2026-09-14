@@ -14,12 +14,13 @@ use MattiaBasone\MinecraftSkin\Isometric\Head;
 use MattiaBasone\MinecraftSkin\Point;
 use MattiaBasone\MinecraftSkin\Tests\BaseTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 #[CoversClass(Head::class)]
 #[CoversClass(Avatar::class)]
 #[CoversClass(Component::class)]
-#[CoversClass(ImageManipulation::class)]
+#[CoversTrait(ImageManipulation::class)]
 #[CoversClass(ImageSection::class)]
 #[CoversClass(LayerValidator::class)]
 #[CoversClass(Point::class)]
@@ -33,8 +34,7 @@ class HeadTest extends BaseTestCase
 
         $actualHead = new \Imagick(self::getHeadSkinPath($username, $size));
 
-        $result = $actualHead->compareImages($head, \Imagick::METRIC_MEANABSOLUTEERROR);
-        $similarity = $result[1];
+        [$_, $similarity] = $actualHead->compareImages($head, \Imagick::METRIC_MEANABSOLUTEERROR);
 
         self::assertLessThan(0.1, $similarity);
     }
@@ -46,6 +46,7 @@ class HeadTest extends BaseTestCase
     {
         return [
             ['_Cyb3r', 32],
+            ['_Cyb3r', 512],
             ['MHF_Steve', 48],
             ['SteveWithHelmet', 64],
         ];

@@ -22,6 +22,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 #[CoversClass(Point::class)]
 class AvatarTest extends BaseTestCase
 {
+    /**
+     * @param int<1, max> $size
+     */
     #[DataProvider('renderDataProvider')]
     public function testRenderAvatar(string $username, int $size, string $side): void
     {
@@ -34,7 +37,7 @@ class AvatarTest extends BaseTestCase
     }
 
     /**
-     * @return list<array{0: string, 1: int, 2: string}>
+     * @return list<array{0: string, 1: int<1, max>, 2: string}>
      */
     public static function renderDataProvider(): array
     {
