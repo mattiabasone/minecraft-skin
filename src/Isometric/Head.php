@@ -23,6 +23,12 @@ class Head implements IsometricImage
     private const int HEAD_MAX_BASE_SIZE = 512;
     private const int HEAD_MIN_BASE_SIZE = 64;
 
+    /**
+     * Pixels the face section overlaps the right section by, to hide the anti-aliased seam
+     * left between two independently distorted, butted-together edges.
+     */
+    private const int SECTION_OVERLAP = 2;
+
     public function __construct(private readonly string $rawSkinImagePath)
     {
     }
@@ -126,11 +132,20 @@ class Head implements IsometricImage
         $head = new \Imagick();
         $head->newImage($finalImageSize, $finalImageSize, $this->getImagickPixelTransparent());
 
-        // This is weird, but it works
-        $faceX = ((int) round($doubleAvatarSize / 2)) - 5;
         $faceY = $rightY = ((int) round($doubleAvatarSize / 4));
         $topX = $rightX = ((int) round($doubleAvatarSize / 16));
         $topY = 0;
+
+        // The face section sits immediately to the right of the right section, sharing the
+        // same vertical edge. Deriving faceX from the right section's actual rendered width
+        // (rather than approximating it as a fraction of $doubleAvatarSize) keeps the two
+        // sections seamlessly aligned at any render size — a fixed-pixel approximation drifts
+        // more, proportionally, the smaller the render.
+        //
+        // distortImage() anti-aliases each section's edges independently, so butting them
+        // together at an exact pixel boundary leaves a thin translucent gap where neither
+        // section's edge fully covers the seam. A small overlap hides it.
+        $faceX = $rightX + $right->getImageWidth() - self::SECTION_OVERLAP;
 
         // Add Face Section
         $head->compositeimage($face->getimage(), \Imagick::COMPOSITE_PLUS, $faceX, $faceY);
