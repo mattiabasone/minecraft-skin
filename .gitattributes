@@ -6,6 +6,5 @@
 /.php-cs-fixer.cache export-ignore
 /phpunit.xml export-ignore
 /phpstan.neon export-ignore
-/psalm.xml export-ignore
 /mago.toml export-ignore
 /composer.lock export-ignore
