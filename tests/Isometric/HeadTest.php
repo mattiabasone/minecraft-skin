@@ -30,7 +30,7 @@ class HeadTest extends BaseTestCase
     #[DataProvider('generateIsometricHeadDataProvider')]
     public function testGenerateIsometricHead(string $username, int $size): void
     {
-        $head = (new Head(self::getRawSkinPath($username)))->render($size);
+        $head = new Head(self::getRawSkinPath($username))->render($size);
 
         $actualHead = new \Imagick(self::getHeadSkinPath($username, $size));
 

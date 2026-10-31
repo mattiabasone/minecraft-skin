@@ -4,11 +4,26 @@ declare(strict_types=1);
 
 namespace MattiaBasone\MinecraftSkin\Tests\Isometric;
 
+use MattiaBasone\MinecraftSkin\Component\Component;
+use MattiaBasone\MinecraftSkin\Component\Side;
+use MattiaBasone\MinecraftSkin\Flat\Avatar;
+use MattiaBasone\MinecraftSkin\Flat\ImageManipulation;
+use MattiaBasone\MinecraftSkin\Flat\ImageSection;
+use MattiaBasone\MinecraftSkin\Flat\LayerValidator;
 use MattiaBasone\MinecraftSkin\Isometric\Body;
+use MattiaBasone\MinecraftSkin\Point;
 use MattiaBasone\MinecraftSkin\Tests\BaseTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 
+#[CoversClass(Component::class)]
+#[CoversClass(Side::class)]
+#[CoversClass(Avatar::class)]
+#[CoversTrait(ImageManipulation::class)]
+#[CoversClass(ImageSection::class)]
+#[CoversClass(LayerValidator::class)]
+#[CoversClass(Point::class)]
 #[CoversClass(Body::class)]
 class BodyTest extends BaseTestCase
 {

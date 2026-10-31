@@ -119,8 +119,8 @@ class Body implements IsometricImage
     /**
      * @param list<int> $u
      * @param list<int> $v
-     * @return array{0: \Imagick, 1: int, 2: int}
      * @throws \ImagickException
+     * @return array{0: \Imagick, 1: int, 2: int}
      */
     private function distortFace(
         \Imagick $skin,
@@ -162,8 +162,8 @@ class Body implements IsometricImage
     /**
      * @param list<int> $u unit vector (X, Y, Z) of the texture horizontal axis
      * @param list<int> $v unit vector (X, Y, Z) of the texture vertical axis
-     * @return array{0: \Imagick, 1: int, 2: int}
      * @throws \ImagickException
+     * @return array{0: \Imagick, 1: int, 2: int}
      */
     private function distort(
         \Imagick $face,
