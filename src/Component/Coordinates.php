@@ -22,7 +22,7 @@ final class Coordinates
 
     public const array TORSO = [
         Side::TOP => [[20, 16], [28, 20]],
-        Side::BOTTOM => [[28, 16], [36, 10]],
+        Side::BOTTOM => [[28, 16], [36, 20]],
         Side::FRONT => [[20, 20], [28, 32]],
         Side::BACK => [[32, 20], [40, 32]],
         Side::RIGHT => [[16, 20], [20, 32]],
@@ -75,8 +75,8 @@ final class Coordinates
     ];
 
     public const array TORSO_LAYER = [
-        Side::TOP => [[20, 48], [28, 36]],
-        Side::BOTTOM => [[28, 48], [36, 36]],
+        Side::TOP => [[20, 32], [28, 36]],
+        Side::BOTTOM => [[28, 32], [36, 36]],
         Side::FRONT => [[20, 36], [28, 48]],
         Side::BACK => [[32, 36], [40, 48]],
         Side::RIGHT => [[16, 36], [20, 48]],
@@ -84,17 +84,17 @@ final class Coordinates
     ];
 
     public const array RIGHT_ARM_LAYER = [
-        Side::TOP => [[44, 48], [48, 36]],
-        Side::BOTTOM => [[48, 48], [52, 36]],
+        Side::TOP => [[44, 32], [48, 36]],
+        Side::BOTTOM => [[48, 32], [52, 36]],
         Side::FRONT => [[44, 36], [48, 48]],
-        Side::BACK => [[52, 36], [64, 48]],
+        Side::BACK => [[52, 36], [56, 48]],
         Side::RIGHT => [[40, 36], [44, 48]],
         Side::LEFT => [[48, 36], [52, 48]],
     ];
 
     public const array RIGHT_LEG_LAYER = [
-        Side::TOP => [[4, 48], [8, 36]],
-        Side::BOTTOM => [[8, 48], [12, 36]],
+        Side::TOP => [[4, 32], [8, 36]],
+        Side::BOTTOM => [[8, 32], [12, 36]],
         Side::FRONT => [[4, 36], [8, 48]],
         Side::BACK => [[12, 36], [16, 48]],
         Side::RIGHT => [[0, 36], [4, 48]],

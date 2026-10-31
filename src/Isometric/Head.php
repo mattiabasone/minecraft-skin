@@ -15,9 +15,6 @@ use MattiaBasone\MinecraftSkin\Flat\Avatar as FlatAvatar;
  */
 class Head implements IsometricImage
 {
-    /**
-     * Cosine PI/6.
-     */
     private const float COSINE_PI_6 = \M_SQRT3 / 2.0;
 
     private const int HEAD_MAX_BASE_SIZE = 512;
